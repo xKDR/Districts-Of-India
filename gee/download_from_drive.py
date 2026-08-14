@@ -56,19 +56,40 @@ def find_folder_id(drive, name):
 
 
 def list_files(drive, folder_id, pattern):
+    """Matching files in the folder, deduplicated by name, newest kept.
+
+    Drive permits several files with the same name in one folder, and a re-export
+    from GEE creates a NEW file rather than replacing the old one. Without the
+    dedupe below, every same-named copy is downloaded to the same destination
+    path in listing order, so a re-export can silently leave the stale version
+    on disk.
+    """
     rx = re.compile(pattern)
     q = f"'{folder_id}' in parents and trashed=false"
     page_token = None
-    out = []
+    newest = {}
+    dupes = 0
     while True:
-        res = drive.files().list(q=q, fields="nextPageToken, files(id, name, size)",
-                                 pageToken=page_token, pageSize=200).execute()
+        res = drive.files().list(
+            q=q, fields="nextPageToken, files(id, name, size, createdTime)",
+            pageToken=page_token, pageSize=200).execute()
         for f in res.get("files", []):
-            if rx.fullmatch(f["name"]):
-                out.append(f)
+            if not rx.fullmatch(f["name"]):
+                continue
+            prev = newest.get(f["name"])
+            if prev is None:
+                newest[f["name"]] = f
+            else:
+                dupes += 1
+                if f["createdTime"] > prev["createdTime"]:
+                    newest[f["name"]] = f
         page_token = res.get("nextPageToken")
         if not page_token:
-            return out
+            break
+    if dupes:
+        print(f"  note: {dupes} superseded same-name copy/copies in Drive ignored; "
+              f"keeping newest by createdTime")
+    return sorted(newest.values(), key=lambda f: f["name"])
 
 
 def download(drive, file_id, dest_path):
