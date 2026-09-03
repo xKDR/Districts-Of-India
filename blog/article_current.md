@@ -20,11 +20,11 @@ The map below shows what this looks like across the country in 2021: building vo
 
 ![Building density by district](figures/fig15c_district_coverage_bv_density.png)
 
-*Building volume per square metre of footprint, 2021, for 640 of the 641 districts in the dataset.*
+*Building volume per square metre of footprint, 2021, for all 641 districts in the dataset.*
 
 Construction is slow and cumulative, so this data moves gradually. It is less a snapshot of current activity, rather it is a record of investment: in housing, in industry, in commerce. We present the underlying data as published, without a separate cleaning pass.
 
-That means the oddities in it are visible too. Ordinarily, one should expect a measure like this to weakly rise monotonically, but we observe an across-the-board decline in building volume in 2022. Some districts show a precipitous single-year collapse in 2018: Kinnaur's building volume falls by almost 50% and Pithoragarh's by 20%, neither of which recovers. Others decline continuously over the whole period. Building volume is computed as the product of surface area and building height, the latter of which has a hard cap of 100m, cutting off taller structures. We are working on a bias correction, using known building heights as anchors for the distribution.
+That means the oddities in it are visible too. Ordinarily, one should expect a measure like this to weakly rise monotonically, but we observe an across-the-board decline in building volume in 2022. Some districts show a precipitous single-year collapse in 2018: Kinnaur's building volume falls by almost 50% and Pithoragarh's by 20%, neither of which recovers. Others decline continuously over the whole period. Building volume is computed as the product of surface area and building height, the latter of which has a hard cap of 100m, cutting off taller structures. We are working on a bias correction mechanism, using known building heights as anchors for the distribution.
 
 ![Anomalies in the building volume series](figures/fig08b_bv_anomalies.png)
 
@@ -46,7 +46,7 @@ The same districts and the same year as the building map earlier, now seen in ra
 
 ![Nighttime lights by district](figures/fig15b_district_coverage_ntl.png)
 
-*Mean radiance per pixel, 2021, for the same districts. Note that the scale runs the other way from the map above: here dark is dim, not dense.*
+*Mean radiance per pixel, 2021, for 640 of the same 641 districts. Note that the scale runs the other way from the map above: here dark is dim, not dense.*
 
 Lights respond much more quickly than buildings. They brighten as neighbourhoods become more active and dim when activity slows. If buildings measure accumulated capital, nighttime lights measure an economy in motion. One caveat: as household and street lighting shifts to LEDs, measured radiance can fall even where activity is rising, because LEDs emit less in the band VIIRS is sensitive to (Kyba et al., 2017). A dimmer district is not necessarily a slower one. Gibson, Olivia and Boe-Gibson (2020) survey this and the other traps in the economic use of nighttime lights, and are worth reading before treating radiance as a direct indicator of output.
 
@@ -58,7 +58,7 @@ The difference in tempo is easiest to see when the two are drawn on the same axi
 
 ### Reading them together
 
-Each dataset answers a straightforward question on its own. Together they answer a more useful one. Where building volume and lights are both climbing, a district is likely in the midst of genuine, sustained growth. If construction is rising but lights remain flat, in indicates new capacity  being built ahead of actual use: possibly the shrewd foresight of planners anticipating development, or, at the other extreme, a ghost town left behind by overestimating demand.
+Each dataset answers a straightforward question on its own. Together they answer a more useful one. Where building volume and lights are both climbing, a district is likely in the midst of genuine, sustained growth. If construction is rising but lights remain flat, it indicates new capacity being built ahead of actual use: possibly the shrewd foresight of planners anticipating development, or, at the other extreme, a ghost town left behind by overestimating demand.
 
 Where lights rise with little new construction, existing capital might be used more intensively, rather than the district expanding outward. That points to constrained resources, limited confidence in long-term growth, or simply a choice to extract more from what is already there.
 
@@ -72,17 +72,17 @@ Revisiting the six districts above in more detail, we see measured building volu
 
 *The six largest disagreements between the two measures, 2016-2023, each indexed to 2016. In every one, measured capital falls while activity brightens.*
 
-Sorting every district on both axes gives nine combinations of rising, flat and falling volume and lights. The chart below shows the starkest district in each: Wayanad, where building volume and lights climbed together; Pithoragarh, where both fell; West Garo Hills, where construction ran ahead of measured activity; and so on through the remaining six.
+Sorting every district on both axes gives nine combinations of rising, flat and falling volume and lights, of which eight are occupied: no district builds while its lights dim. The chart below shows the starkest district in each: Wayanad, where building volume and lights climbed together; Pithoragarh, where both fell; Lucknow, where construction ran ahead of measured activity; and so on through the remaining five.
 
-![Building volume and lights trends for the starkest district in each of nine categories](figures/fig01b_stark_grid_recomputed.png)
+![Building volume and lights trends for the starkest district in each of eight categories](figures/fig01b_stark_grid_recomputed.png)
 
-*Building volume and nighttime lights, indexed to 2016, for the starkest district in each of the nine combinations.*
+*Building volume and nighttime lights, indexed to 2016, for the starkest district in each of the eight occupied combinations.*
 
 ### Getting the data
 
 We built this dataset to make these kinds of questions easier to ask, at a scale India's official statistics don't reach: the district, updated annually or monthly instead of once a decade. Beyer, Chhabra, Galdo and Rama (2018) showed what that resolution buys: working with cleaned VIIRS at the district level, they traced the effect of demonetisation on Indian districts month by month, an episode that state-level annual data would have largely smoothed away. Seth, Singh and Uday (2026) go finer still: working with building volume inside urban local body boundaries in Karnataka, and find that the summed building volume of a body explains much of the variation in property tax demand, a satellite measure becoming a way for municipalities to verify what they report about themselves. Our dataset should be useful to researchers working on regional inequality, urbanisation and the geography of growth, and to anyone in government trying to keep track of places where the usual numbers arrive too late (if at all).
 
-Economic development leaves visible traces on the landscape long before it reaches the statistical system. Our hope is that this dataset makes them usable. The processing pipeline is public and runs end to end in two Colab notebooks, one for [building volume](https://colab.research.google.com/github/xKDR/India-Built-and-Lit/blob/main/building_volume.ipynb) and one for [nighttime lights](https://colab.research.google.com/github/xKDR/India-Built-and-Lit/blob/main/nighttime_lights.ipynb), with the cleaned outputs also available as CSVs ([BV](https://xkdr.github.io/India-Built-and-Lit/data/bv_annual.csv), [NL](https://xkdr.github.io/India-Built-and-Lit/data/viirs_monthly.csv), and [district bounds](https://xkdr.github.io/India-Built-and-Lit/data/districts_simplified.geojson)). Swap the geography to point it at a different country or a different administrative boundary, and the pipelines will cooperate.
+Economic development leaves visible traces on the landscape long before it reaches official databases. Our hope is that this dataset makes them usable. The data is available as CSVs ([BV](https://xkdr.github.io/India-Built-and-Lit/data/bv_annual.csv), [NL](https://xkdr.github.io/India-Built-and-Lit/data/viirs_monthly.csv), and [district bounds](https://xkdr.github.io/India-Built-and-Lit/data/districts_simplified.geojson)). The processing pipeline is public and runs end to end in two Colab notebooks, one for [building volume](https://colab.research.google.com/github/xKDR/India-Built-and-Lit/blob/main/building_volume.ipynb) and one for [nighttime lights](https://colab.research.google.com/github/xKDR/India-Built-and-Lit/blob/main/nighttime_lights.ipynb). Note that the provided nightlights CSV was computed at native resolution, while the notebook downsamples to remain within colab's usage limits. Swap the geography to point it at a different country or a different administrative boundary, and the pipelines will cooperate.
 
 ### Bibliography
 
