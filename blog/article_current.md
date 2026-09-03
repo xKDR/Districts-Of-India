@@ -72,7 +72,7 @@ Revisiting the six districts above in more detail, we see measured building volu
 
 *The six largest disagreements between the two measures, 2016-2023, each indexed to 2016. In every one, measured capital falls while activity brightens.*
 
-Sorting every district on both axes gives nine combinations of rising, flat and falling volume and lights, of which eight are occupied: no district builds while its lights dim. The chart below shows the starkest district in each: Wayanad, where building volume and lights climbed together; Pithoragarh, where both fell; Lucknow, where construction ran ahead of measured activity; and so on through the remaining five.
+Sorting every district on both axes gives nine combinations of rising, flat and falling volume and lights, of which eight hold districts. The empty one is rising volume with dimming lights, where the pattern is near-zero, rather than truly absent. The chart below shows the starkest district in each: Wayanad, where building volume and lights climbed together; Pithoragarh, where both fell; Lucknow, where construction ran ahead of measured activity; and so on through the remaining five.
 
 ![Building volume and lights trends for the starkest district in each of eight categories](figures/fig01b_stark_grid_recomputed.png)
 
