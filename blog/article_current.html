@@ -36,7 +36,7 @@
 
 <p>These are the same districts in the same year, seen in concrete rather than in radiance. The densely built regions broadly match the bright ones, but not exactly. The Gangetic plain and the southern coasts are brighter than their building stock alone would suggest, and parts of the interior are dimmer. That gap is the reason for carrying both measures.</p>
 
-<p>Here the contrast with nighttime lights is instructive. A decade of work has gone into understanding what is wrong with VIIRS data and how to fix it. For building volume, that literature does not yet exist. There are no papers cataloguing its biases and no established cleaning pipeline. We therefore release the building volume data as published by Google, without a cleaning pass of our own, and note its most significant problems in <a href="https://xkdr.github.io/India-Built-and-Lit/blog/article_appendix.html">our appendix</a>.</p>
+<p>Here the contrast with nighttime lights is instructive. A decade of work has gone into understanding what is wrong with VIIRS data and how to fix it. For building volume, that literature does not yet exist. There are no papers cataloguing its biases and no established cleaning pipeline. We therefore release the building volume data as published by Google, without a cleaning pass of our own, and note its most significant problems in <a href="https://github.com/xKDR/India-Built-and-Lit/blob/main/blog/article_appendix.md">our appendix</a>.</p>
 
 <p>There is one respect in which building volume has more potential than lights, and it is the reason we are optimistic about it despite these problems. The height of a building is an objective, verifiable measure. Municipal building registers, property tax rolls and structures of known height give a ground truth against which the satellite estimate can be checked and corrected. Seth, Singh and Uday (2026) have begun to do this in Karnataka: working with building volume inside urban local body boundaries, they find that the summed volume of a body explains much of the variation in its property tax demand. There is no comparable ground truth for the radiance of a district. We are working on a bias correction for building heights that uses known buildings as anchors for the distribution, and we expect that the cleaning methodology for this data will develop in the coming years, as it did for lights.</p>
 
@@ -44,7 +44,7 @@
 
 <p>Each measure answers a straightforward question on its own. Together they answer a more useful one. Building volume is the stock of capital in a district; lights are the flow of activity running through it.</p>
 
-<p>Across districts in a single year the two agree closely. In 2023 the correlation between log building volume and log radiance is 0.83, and the fitted slope is about 1.5: a district with twice the built volume of another is, on average, close to three times as bright. Some of that is size, since a larger district holds both more buildings and more lit pixels. What is useful is the spread around the line. The six districts furthest from it all lie on the same side, dim for what has been built, by factors of twenty to eighty, and five of the six are in the Himalayas or the Northeast&mdash;the same regions that account for the largest disagreements in trend below.</p>
+<p>Across districts in a single year the two agree closely. In 2023 the correlation between log building volume and log radiance is 0.83, and the fitted slope is about 1.5: a district with twice the built volume of another is, on average, close to three times as bright. Some of that is size, since a larger district holds both more buildings and more lit pixels. What is useful is the spread around the line. The six districts furthest from it all lie on the same side, dim for what has been built, by factors of twenty to eighty, and five of the six are in the Himalayas or the Northeast.</p>
 
 <center><img src="figures/fig17_volume_vs_lights_2023.png" alt="Building volume against nighttime lights, 2023" width="700"><br><i>Every district in 2023: building volume against summed radiance, both on log scales, with the fitted line. The named districts are the six furthest from it, all of them dimmer than their building stock would suggest.</i></center>
 
@@ -56,13 +56,7 @@
 
 <center><img src="figures/fig03_slope_quadrant.png" alt="Building volume growth against lights growth, by district" width="700"><br><i>Every district, 2016 to 2023: the trend in building volume against the trend in nighttime lights. Most sit in the upper right; the named districts are the ones where the two measures disagree most.</i></center>
 
-<p>Most districts sit in the upper right, where both measures are rising. The interesting cases are where the two disagree. In the six districts where the disagreement is largest, measured building volume falls while the lights climb.</p>
-
-<center><img src="figures/fig04_disagreements_6panel.png" alt="The six districts where the two measures disagree most" width="700"><br><i>The six largest disagreements between the two measures, 2016 to 2023, each indexed to 2016. In every one, measured capital falls while activity brightens.</i></center>
-
-<p>Five of the six are in the Himalayas: Kargil, Kishtwar, Chamoli, Bageshwar and Tawang. So are Kinnaur and Pithoragarh, the two districts with the sharpest single-year collapses. This suggests that the disagreement is a problem of measurement rather than of economics. A model that estimates building height from imagery may well struggle with steep terrain. We have not established this, but it is the first hypothesis we would test, and it is the kind of question that ground truth settles.</p>
-
-<p>Splitting each measure three ways, into rising, flat and falling, gives nine combinations, of which eight are occupied. The empty one is rising volume with dimming lights. The chart below shows the starkest district in each of the eight: Wayanad, where building volume and lights climbed together; Pithoragarh, where both fell; Central Delhi, where both are flat, as one expects of a district that is built out; Lucknow, where construction ran ahead of measured activity; and so on through the remaining four.</p>
+<p>Most districts sit in the upper right, where both measures are rising. The interesting cases are where the two disagree. Splitting each measure three ways, into rising, flat and falling, gives nine combinations, of which eight are occupied. The empty one is rising volume with dimming lights. The chart below shows the starkest district in each of the eight: Wayanad, where building volume and lights climbed together; Pithoragarh, where both fell; Central Delhi, where both are flat, as one expects of a district that is built out; Lucknow, where construction ran ahead of measured activity; and so on through the remaining four.</p>
 
 <center><img src="figures/fig01b_stark_grid_recomputed.png" alt="Building volume and lights trends for the starkest district in each of eight categories" width="700"><br><i>Building volume and nighttime lights, indexed to 2016, for the starkest district in each of the eight occupied combinations.</i></center>
 
@@ -87,8 +81,6 @@
 <p><i><a href="https://www.aeaweb.org/articles?id=10.1257/aer.102.2.994">Measuring economic growth from outer space</a></i>, J. Vernon Henderson, Adam Storeygard and David N. Weil, American Economic Review, Vol. 102, No. 2, April 2012.</p>
 
 <p><i><a href="https://www.science.org/doi/10.1126/sciadv.1701528">Artificially lit surface of Earth at night increasing in radiance and extent</a></i>, Christopher C. M. Kyba and others, Science Advances, Vol. 3, No. 11, November 2017.</p>
-
-<p><i><a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-9361.2005.00263.x">Industrial location and spatial inequality: Theory and evidence from India</a></i>, Somik V. Lall and Sanjoy Chakravorty, Review of Development Economics, Vol. 9, No. 1, February 2005.</p>
 
 <p><i><a href="https://xkdr.org/paper/but-clouds-got-in-my-way-bias-and-bias-correction-of-viirs-nighttime-lights-data-in-the-presence-of-clouds">But clouds got in my way: Bias and bias correction of VIIRS nighttime lights data in the presence of clouds</a></i>, Ayush Patnaik, Ajay Shah, Anshul Tayal and Susan Thomas, XKDR Forum Working Paper No. 7, October 2021.</p>
 
