@@ -17,8 +17,12 @@ import html
 import re
 from pathlib import Path
 
-SRC = Path(__file__).resolve().parent / "article_current.md"
-DST = SRC.with_suffix(".html")
+sources = [
+    Path(__file__).resolve().parent / "article_current.md",
+    Path(__file__).resolve().parent / "article_appendix.md",
+]
+dest = [sources[0].with_suffix(".html"),
+        sources[1].with_suffix(".html")]
 IMG_WIDTH = 700  # px; blogger scales the rest
 
 
@@ -30,32 +34,33 @@ def inline(text: str) -> str:
     text = text.replace("—", "&mdash;").replace("–", "&ndash;")
     return text
 
-
-blocks = [b.strip() for b in SRC.read_text().split("\n\n") if b.strip()]
-out, i = [], 0
-while i < len(blocks):
-    b = blocks[i]
-    if b.startswith("### "):
-        out.append(f"<h3>{inline(b[4:])}</h3>")
-    elif b.startswith("!["):
-        alt, src = re.match(r"!\[([^\]]*)\]\(([^)]+)\)", b).groups()
-        caption = ""
-        if i + 1 < len(blocks) and blocks[i + 1].startswith("*"):
-            i += 1
-            caption = f"<br><i>{inline(blocks[i].strip('*'))}</i>"
-        out.append(
-            f'<center><img src="{html.escape(src)}" alt="{html.escape(alt)}" '
-            f'width="{IMG_WIDTH}">{caption}</center>'
-        )
-    elif b.startswith("- "):
-        items = "".join(f"<li>{inline(line[2:])}</li>" for line in b.split("\n"))
-        out.append(f"<ul>{items}</ul>")
-    else:
-        out.append(f"<p>{inline(' '.join(b.split(chr(10))))}</p>")
-    i += 1
+for _ in range(2):
+    SRC, DST = sources[_], dest[_]
+    blocks = [b.strip() for b in SRC.read_text().split("\n\n") if b.strip()]
+    out, i = [], 0
+    while i < len(blocks):
+        b = blocks[i]
+        if b.startswith("### "):
+            out.append(f"<h3>{inline(b[4:])}</h3>")
+        elif b.startswith("!["):
+            alt, src = re.match(r"!\[([^\]]*)\]\(([^)]+)\)", b).groups()
+            caption = ""
+            if i + 1 < len(blocks) and blocks[i + 1].startswith("*"):
+                i += 1
+                caption = f"<br><i>{inline(blocks[i].strip('*'))}</i>"
+            out.append(
+                f'<center><img src="{html.escape(src)}" alt="{html.escape(alt)}" '
+                f'width="{IMG_WIDTH}">{caption}</center>'
+            )
+        elif b.startswith("- "):
+            items = "".join(f"<li>{inline(line[2:])}</li>" for line in b.split("\n"))
+            out.append(f"<ul>{items}</ul>")
+        else:
+            out.append(f"<p>{inline(' '.join(b.split(chr(10))))}</p>")
+        i += 1
 
 # instructions.txt item 3: start with <html><body>, end with </body></html>.
 DST.write_text("<html><body>\n\n" + "\n\n".join(out) + "\n\n</body></html>\n")
-print(f"wrote {DST.name}: {len(out)} blocks, "
+print(f"wrote {[d.name for d in dest]}: {len(out)} blocks, "
       f"{sum(o.startswith('<center>') for o in out)} figures, "
       f"{sum(o.startswith('<h3>') for o in out)} sections")

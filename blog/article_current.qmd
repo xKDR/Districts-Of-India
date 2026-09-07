@@ -1,4 +1,8 @@
-By [AUTHOR NAMES].
+---
+title: "India, Built and Lit"
+subtitle: "District building volume and nighttime lights, from satellite imagery"
+author: "[AUTHOR NAMES]"
+---
 
 How fast is Pune growing, compared with Nagpur? Is Coimbatore catching up with Chennai? In India, these simple questions are surprisingly hard to answer.
 
@@ -12,7 +16,7 @@ Satellites were not designed as instruments of economic measurement. But every f
 
 The difficulty is that raw satellite data is not usable as is. It arrives in unfamiliar formats, it must be corrected for a long list of biases, and processing it at the scale of a country requires serious computation. A researcher who wants a district-level series faces months of engineering before the first regression. The purpose of this dataset is to do that engineering once, in public, so that nobody has to do it again.
 
-### Nighttime lights: a measure of economic activity
+## Nighttime lights: a measure of economic activity
 
 Nighttime lights are the older of the two measures, and economists have been using them for more than a decade. The data comes from the Visible Infrared Imaging Radiometer Suite (VIIRS) (Elvidge et al., 2021). We use the monthly series from 2014 onwards, at a resolution of 500 metres. For each pixel and month, VIIRS reports the average radiance and the number of cloud-free observations that went into it. Each district-month row in our dataset gives the sum of radiance across the district, the mean radiance per pixel, and the number of pixels.
 
@@ -28,7 +32,7 @@ Lights are a flow. They respond quickly: a neighbourhood brightens as it becomes
 
 A word of caution. As household and street lighting shifts to LEDs, measured radiance can fall even where activity is rising, because LEDs emit less in the band that VIIRS is sensitive to (Kyba et al., 2017). A dimmer district is not necessarily a slower one. Gibson, Olivia and Boe-Gibson (2020) survey this and the other traps in the economic use of nighttime lights, and are worth reading before treating radiance as a direct measure of output.
 
-### Building volume: a measure of the capital stock
+## Building volume: a measure of the capital stock
 
 The second measure is new. Google's [Open Buildings 2.5D Temporal](https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_Research_open-buildings-temporal_v1) dataset (Sirko et al., 2023) is built from Sentinel-2 imagery at an effective resolution of 4 metres. It estimates not just where buildings stand but how tall they are, for every year from 2016 to 2023. Where the lights are high frequency, the buildings are high resolution. We resample the raw data to 100 metres, which is far quicker to process and is plenty for district-level work, and chunk the requests to stay within Google Earth Engine's limits. Each district-year row gives the total building footprint in the district, the mean building height, and the total building volume, which is the product of the two.
 
@@ -44,7 +48,7 @@ Here the contrast with nighttime lights is instructive. A decade of work has gon
 
 There is one respect in which building volume has more potential than lights, and it is the reason we are optimistic about it despite these problems. The height of a building is an objective, verifiable measure. Municipal building registers, property tax rolls and structures of known height give a ground truth against which the satellite estimate can be checked and corrected. Seth, Singh and Uday (2026) have begun to do this in Karnataka: working with building volume inside urban local body boundaries, they find that the summed volume of a body explains much of the variation in its property tax demand. There is no comparable ground truth for the radiance of a district. We are working on a bias correction for building heights that uses known buildings as anchors for the distribution, and we expect that the cleaning methodology for this data will develop in the coming years, as it did for lights.
 
-### Putting the two together
+## Putting the two together
 
 Each measure answers a straightforward question on its own. Together they answer a more useful one. Building volume is the stock of capital in a district; lights are the flow of activity running through it.
 
@@ -80,7 +84,7 @@ Splitting each measure three ways, into rising, flat and falling, gives nine com
 
 *Building volume and nighttime lights, indexed to 2016, for the starkest district in each of the eight occupied combinations.*
 
-### Obtaining the data
+## Obtaining the data
 
 This dataset is a public good. It is released with the code, so that every number in it can be reproduced. The data is available as CSVs ([nighttime lights](https://xkdr.github.io/India-Built-and-Lit/data/viirs_monthly.csv), [building volume](https://xkdr.github.io/India-Built-and-Lit/data/bv_annual.csv), and [district boundaries](https://xkdr.github.io/India-Built-and-Lit/data/districts_simplified.geojson)). The processing pipeline runs end to end in two Colab notebooks, one for [nighttime lights](https://colab.research.google.com/github/xKDR/India-Built-and-Lit/blob/main/nighttime_lights.ipynb) and one for [building volume](https://colab.research.google.com/github/xKDR/India-Built-and-Lit/blob/main/building_volume.ipynb). One note: the nighttime lights CSV was computed at native resolution, while the notebook downsamples in order to stay within Colab's usage limits. Point the notebooks at a different set of boundaries, whether another country or another administrative level, and the pipelines will run unchanged.
 
@@ -88,7 +92,7 @@ We built this for two audiences. The first is researchers working on regional in
 
 This is a first step. There is a great deal of work to be done: on the bias correction of building heights, on the LED problem in lights, and on validating both measures against ground truth wherever it exists. Economic development leaves visible traces on the landscape long before it reaches official databases. We hope that researchers will use this data, find its problems, and help us improve it.
 
-### References
+## References
 
 *[Measuring districts' monthly economic activity from outer space](https://openknowledge.worldbank.org/entities/publication/86379208-572b-50af-af6c-9c08ece68edc/full)*, Robert Beyer, Esha Chhabra, Virgilio Galdo and Martin Rama, World Bank Policy Research Working Paper No. 8523, July 2018.
 
@@ -112,6 +116,6 @@ This is a first step. There is a great deal of work to be done: on the bias corr
 
 *[High-resolution building and road detection from Sentinel-2](https://arxiv.org/abs/2310.11622)*, Wojciech Sirko, Emmanuel Asiedu Brempong, Juliana T. C. Marcos, Abigail Annkah, Abel Korme, Mohammed Alewi Hassen, Krishna Sapkota, Tomer Shekel, Abdoulaye Diack, Sella Nevo and others, arXiv:2310.11622, 2023.
 
-### Acknowledgments
+## Acknowledgments
 
 [AUTHOR NAMES] are [BLANK]. Thanks to [BLANK] for comments.

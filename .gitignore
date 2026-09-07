@@ -231,3 +231,7 @@ julia/Manifest.toml
 *.jl.*.cov
 *.jl.mem
 .julia/
+
+# Quarto site rendered by blog/md_to_quarto.py
+blog/_site/
+blog/.quarto/

@@ -1,0 +1,20 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "India · Built & Lit"
+  navbar:
+    left:
+      - href: article_current.qmd
+        text: Article
+      - href: article_appendix.qmd
+        text: Appendix
+      - href: https://github.com/xKDR/India-Built-and-Lit
+        text: GitHub
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    fig-align: center
