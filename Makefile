@@ -9,6 +9,8 @@
 #   make viirs             — run NighttimeLights.clean_complete + zonal aggregation
 #   make panel             — merge cleaned VIIRS + raw buildings into district_panel.csv
 #   make dashboard         — generate docs/index.html
+#   make blog              — article markdown → Blogger-ready article_current.html
+#   make quarto            — article markdown → Quarto website in blog/_site/
 #   make all               — boundaries → panel → dashboard (assumes raw CSVs already in place)
 #   make clean             — remove cleaned outputs (raw GEE downloads kept)
 #
@@ -30,9 +32,12 @@ JULIA         := julia --project=julia --threads=8
 RAW_DIR       := data/raw
 CLEAN_DIR     := data/clean
 DASH_DATA     := docs/data
+BLOG          := blog
+BLOG_MD       := $(BLOG)/article_current.md $(BLOG)/article_appendix.md
+BLOG_HTML     := $(BLOG_MD:.md=.html)
 BV_CSVS       := $(wildcard $(RAW_DIR)/buildings_*.csv)
 
-.PHONY: all boundaries export-bv tasks julia-deps viirs bv dashboard serve clean help
+.PHONY: all boundaries export-bv tasks julia-deps viirs bv dashboard blog quarto serve clean help
 
 help:
 	@awk 'BEGIN{FS=":.*##"} /^[a-z][a-zA-Z0-9_-]+:.*##/{printf "  %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -84,9 +89,25 @@ $(DASH_DATA)/viirs_monthly.csv: $(CLEAN_DIR)/viirs_monthly.csv
 	@mkdir -p $(DASH_DATA)
 	cp $< $@
 
+blog: $(BLOG_HTML)  ## Article markdown → Blogger-ready HTML
+
+# One run writes both files, so they are a grouped target -- same shape as the
+# boundaries rule above.
+$(BLOG_HTML) &: $(BLOG_MD) $(BLOG)/md_to_blog_html.py
+	$(PY) $(BLOG)/md_to_blog_html.py
+
+quarto: $(BLOG)/_site/index.html  ## Article + appendix → Quarto website in blog/_site/
+
+# Needs quarto on PATH (https://quarto.org/docs/download/). The .qmd files are
+# regenerated every run, so they are ignored by git; blog/_site/ is the artifact.
+$(BLOG)/_site/index.html: $(BLOG_MD) $(BLOG)/md_to_quarto.py
+	$(PY) $(BLOG)/md_to_quarto.py
+	cd $(BLOG) && quarto render .
+
 serve: dashboard  ## Local preview at http://localhost:8080/
 	$(PY) -m http.server --directory docs 8080
 
-clean:  ## Remove cleaned outputs and staged dashboard data
+clean:  ## Remove cleaned outputs, staged dashboard data and the rendered blog site
 	rm -f $(CLEAN_DIR)/*.csv $(CLEAN_DIR)/*.geojson
 	rm -rf $(DASH_DATA)
+	rm -rf $(BLOG)/_site $(BLOG)/.quarto $(BLOG)/*.qmd

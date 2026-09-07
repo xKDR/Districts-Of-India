@@ -28,6 +28,10 @@ PAGES = {
     "article_current.md": {
         "title": "India, Built and Lit",
         "subtitle": "District building volume and nighttime lights, from satellite imagery",
+        # A website project needs a landing page. This is the only page that could
+        # be one, and Quarto resolves navbar hrefs through it, so the href below
+        # stays article_current.qmd.
+        "output-file": "index.html",
     },
     "article_appendix.md": {
         "title": "Appendix: problems in the building volume data",

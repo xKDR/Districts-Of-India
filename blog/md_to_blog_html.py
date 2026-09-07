@@ -34,8 +34,7 @@ def inline(text: str) -> str:
     text = text.replace("—", "&mdash;").replace("–", "&ndash;")
     return text
 
-for _ in range(2):
-    SRC, DST = sources[_], dest[_]
+for SRC, DST in zip(sources, dest):
     blocks = [b.strip() for b in SRC.read_text().split("\n\n") if b.strip()]
     out, i = [], 0
     while i < len(blocks):
@@ -59,8 +58,8 @@ for _ in range(2):
             out.append(f"<p>{inline(' '.join(b.split(chr(10))))}</p>")
         i += 1
 
-# instructions.txt item 3: start with <html><body>, end with </body></html>.
-DST.write_text("<html><body>\n\n" + "\n\n".join(out) + "\n\n</body></html>\n")
-print(f"wrote {[d.name for d in dest]}: {len(out)} blocks, "
-      f"{sum(o.startswith('<center>') for o in out)} figures, "
-      f"{sum(o.startswith('<h3>') for o in out)} sections")
+    # instructions.txt item 3: start with <html><body>, end with </body></html>.
+    DST.write_text("<html><body>\n\n" + "\n\n".join(out) + "\n\n</body></html>\n")
+    print(f"wrote {DST.name}: {len(out)} blocks, "
+          f"{sum(o.startswith('<center>') for o in out)} figures, "
+          f"{sum(o.startswith('<h3>') for o in out)} sections")
